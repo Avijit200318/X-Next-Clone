@@ -74,6 +74,8 @@ export default function Input() {
         setText('');
         setImageFileUrl(null);
         setSelecedFile(null);
+        location.reload();
+        // after create the new post refresh the page
     }
 
     if(!session) return null;
