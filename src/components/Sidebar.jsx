@@ -9,7 +9,7 @@ import { HiDotsHorizontal } from "react-icons/hi";
 
 export default function Sidebar() {
   const { data: session } = useSession();
-  console.log(session);
+  // console.log(session);
   // this session tell us if the use is authenticated or not.
   return (
     <div className='flex flex-col p-3 justify-between h-screen'>
