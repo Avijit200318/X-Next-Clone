@@ -8,7 +8,7 @@ import { signIn, useSession } from 'next-auth/react';
 import { app } from "../firebase";
 import { collection, deleteDoc, doc, getFirestore, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useRecoilState } from 'recoil';
-import { modalState } from '@/atom/modalAtom';
+import { modalState, postIdState } from '@/atom/modalAtom';
 
 export default function Icons({ id, uid }) {
 
@@ -19,6 +19,7 @@ export default function Icons({ id, uid }) {
 
     // using global state
     const [open, setOpen] = useRecoilState(modalState);
+    const [postId, setPostId] = useRecoilState(postIdState);
 
     const likePost = async () => {
         if (session) {
@@ -65,7 +66,14 @@ export default function Icons({ id, uid }) {
     return (
         <div>
             <div className="flex justify-start gap-5 p-2 text-gray-500">
-                <HiOutlineChat onClick={()=> setOpen(!open)} className='text-[2.5rem] cursor-pointer rounded-full transition duration-500 ease-in-out p-2 hover:text-sky-500 hover:bg-sky-100' />
+                <HiOutlineChat onClick={()=> {
+                  if(!session){
+                    signIn()
+                  }else{
+                    setOpen(!open);
+                    setPostId(id);
+                  }
+                  }} className='text-[2.5rem] cursor-pointer rounded-full transition duration-500 ease-in-out p-2 hover:text-sky-500 hover:bg-sky-100' />
                 <div className="flex items-center">
                 {isLiked ? (
                     <HiHeart onClick={likePost} className='text-[2.5rem] cursor-pointer text-red-600 rounded-full transition duration-500 ease-in-out p-2 hover:text-sky-500 hover:bg-sky-100' />
