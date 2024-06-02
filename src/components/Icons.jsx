@@ -8,7 +8,7 @@ import { signIn, useSession } from 'next-auth/react';
 import { app } from "../firebase";
 import { collection, deleteDoc, doc, getFirestore, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
 
-export default function Icons({ id }) {
+export default function Icons({ id, uid }) {
 
     const { data: session } = useSession();
     const [isLiked, setIsLiked] = useState(false);
@@ -42,6 +42,21 @@ export default function Icons({ id }) {
         );
       }, [likes]);
 
+      const deletePost = async () => {
+        if(window.confirm('Are you want to delete the post?')){
+          if(session?.user?.uid === uid){
+            deleteDoc(doc(db, 'posts', id)).then(()=> {
+              console.log("Document successfully deleted");
+              window.location.reload();
+            }).catch((error) => {
+              console.log(error);
+            })
+          }else{
+            alert("You are not authorized to delete this post");
+          }
+        }
+      }
+
     return (
         <div>
             <div className="flex justify-start gap-5 p-2 text-gray-500">
@@ -54,7 +69,9 @@ export default function Icons({ id }) {
                 )}
                 {likes.length > 0 && <span className={`text-sm ${isLiked? 'text-red-600':''}`}>{likes.length}</span>}
                 </div>
-                <HiOutlineTrash className='text-[2.4rem] cursor-pointer rounded-full transition duration-500 ease-in-out p-2 hover:text-sky-500 hover:bg-red-100' />
+                {session?.user.uid === uid && (
+                  <HiOutlineTrash onClick={deletePost} className='text-[2.4rem] cursor-pointer rounded-full transition duration-500 ease-in-out p-2 hover:text-sky-500 hover:bg-red-100' />
+                )}
             </div>
         </div>
     )
