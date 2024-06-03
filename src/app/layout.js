@@ -12,6 +12,8 @@ export const metadata = {
   description: "A clone of X website built using next app",
 };
 
+export const dynamic = 'force-dynamic';
+
 export default function RootLayout({ children }) {
   return (
     <SessionWrapper>
