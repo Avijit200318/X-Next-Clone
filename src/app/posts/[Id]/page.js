@@ -4,6 +4,7 @@ import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { HiArrowLeft } from 'react-icons/hi';
 import Link from 'next/link';
 import Posts from '@/components/Posts';
+import Comments from '@/components/Comments';
 
 export default async function page({params}) {
   // to get the id which is in params or [id] folder we can use 'params'. only aplicable for next js.
@@ -23,6 +24,7 @@ export default async function page({params}) {
           <h2 className="text-lg ">Back</h2>
       </div>
       <Posts post={data} id={data.id} />
+      <Comments id={params.Id}/>
     </div>
   )
 }
